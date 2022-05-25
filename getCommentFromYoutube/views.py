@@ -8,7 +8,7 @@ strbun = template.Library()
 
 def inputSearchingUrl(request):
     # 메인 페이지(검색 페이지)
-    return render(request, 'index.html', )
+    return render(request, 'index3.html', )
 
 @csrf_exempt
 @strbun.filter("geturl")
