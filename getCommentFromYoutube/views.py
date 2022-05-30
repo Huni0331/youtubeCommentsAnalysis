@@ -11,6 +11,7 @@ def inputSearchingUrl(request):
     return render(request, 'index.html', )
 
 
+
 @csrf_exempt
 @strbun.filter("geturl")
 def getCommentsFromYoutube(request):
@@ -25,8 +26,18 @@ def getCommentsFromYoutube(request):
 
     reviews = getComments(geturl_form.split('v=')[1])
 
+    global id
+
+    id = geturl_form.split('v=')[1]
+
+    exec(open('getCommentFromYoutube/predict_views.py', encoding="UTF-8").read())
+
     return render(request, 'index2.html', context)
 
 # predict_views.py 로 reviews 를 보낼 때, 사용하는 함수
 def send_reviews() :
     return reviews
+
+# predict_views.py 로 id 를 보낼 때, 사용하는 함수
+def send_id() :
+    return id
