@@ -130,11 +130,15 @@ for i in range(0,len(text)):
 
 print('긍정 댓글 비율 : ', (cnt/len(text)) * 100)
 
+global percent
+
 percent = (cnt/len(text)) * 100
 
 # 긍정 댓글 신뢰도 상위 5개
 
 top_5_idx = np.argsort(top_score)[-5:] # top_score 값 중, 상위 5개 인덱스
+
+global top_text
 
 top_text = []
 
@@ -148,6 +152,8 @@ for i in top_5_idx:
 # 부정 댓글 신뢰도 상위 5개
 
 low_5_idx = np.argsort(low_score)[-5:] # low_score 값 중, 상위 5개 인덱스
+
+global low_text
 
 low_text = []
 
@@ -176,3 +182,26 @@ def keyword_extractor(tagger, text):
 
 twit = Twitter()
 print( keyword_extractor(twit, text) )
+
+global keyword
+
+keyword = keyword_extractor(twit, text)
+
+def save_db() :
+    import psycopg2
+
+    from getCommentFromYoutube.views import send_id
+
+    connection = psycopg2.connect("host=localhost dbname=postgres user=postgres password=me2126bo port=5432")
+
+    query = "insert into test (id, per, good_top5, bad_top5, keyword) values (%s, %s, %s, %s, %s);"
+
+    values = (send_id(), percent, top_text, low_text, keyword)
+
+    cur = connection.cursor()
+    # 테이블 생성 코드는 처음에만 실행, 그 다음부턴 주석처리 해야됨
+    # cur.execute("CREATE TABLE test (id varchar(300) PRIMARY KEY, per double precision, good_top5 varchar(300), bad_top5 varchar(300), keyword varchar(300));")
+    cur.execute(query, values)
+    connection.commit()
+
+save_db()
