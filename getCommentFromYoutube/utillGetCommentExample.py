@@ -6,7 +6,7 @@ from googleapiclient.discovery import build # 2. pip install google-api-python-c
 YOUTUBE_API_KEY = "YOUR_YOUTUBE_API"
 
 
-#댓글 가져오기
+# 댓글 가져오기
 def getComments(urlvalue):
     DEVELOPER_KEY = YOUTUBE_API_KEY
     YOUTUBE_API_SERVICE_NAME = "youtube"
@@ -46,13 +46,15 @@ def getComments(urlvalue):
     return reviews
 
 
-#영상 제목, 썸네일 가져오기
+# 영상 제목, 썸네일 가져오기
 def getThumbnail(urlvalue):
+    global title
+    global image
     DEVELOPER_KEY = YOUTUBE_API_KEY
     YOUTUBE_API_SERVICE_NAME = "youtube"
     YOUTUBE_API_VERSION = "v3"
-    titles = []
-    images = []
+    # titles
+    # images
     videoId_init = urlvalue
     youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey=DEVELOPER_KEY)
     cm = youtube.videos().list(
@@ -60,9 +62,8 @@ def getThumbnail(urlvalue):
         part='snippet'
     ).execute()
 
-
     for i in cm['items']:
-        titles.append(i['snippet']['title'])
-        images.append(i['snippet']['thumbnails']['medium']['url'])
+        title = i['snippet']['title']
+        image = i['snippet']['thumbnails']['medium']['url']
 
-    return titles, images
+    return title, image

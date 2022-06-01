@@ -26,6 +26,7 @@ def getCommentsFromYoutube(request):
         print()
 
     print("댓글 끝")
+    print()
 
     getTitle, getImage = getThumbnail(geturl_form.split('v=')[1])
     print(getTitle)
